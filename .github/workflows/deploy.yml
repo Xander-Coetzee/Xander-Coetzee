@@ -15,8 +15,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject API Key
+        env:
+          GEMINI_API_KEY: "${{ secrets.GEMINI_API_KEY }}"
         run: |
-          sed -i 's|const apiKey = ""; // API key will be injected during deployment|const apiKey = "${{ secrets.GEMINI_API_KEY }}";|g' index.html
+          sed -i "s|const apiKey = \"\"; // API key will be injected during deployment|const apiKey = \"$GEMINI_API_KEY\";|g" index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
