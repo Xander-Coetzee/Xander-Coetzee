@@ -838,11 +838,14 @@
         try {
           const response = await fetch(url, options);
           if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`API Error Body: ${errorText}`);
+
             // If rate limited (429) or server error (5xx), retry
             if (response.status === 429 || response.status >= 500) {
               throw new Error(`Retryable Error: ${response.status}`);
             }
-            throw new Error(`API Error: ${response.status}`);
+            throw new Error(`API Error: ${response.status} - ${errorText}`);
           }
           return response;
         } catch (error) {
@@ -862,8 +865,8 @@
         systemInstruction = "You are a helpful assistant."
       ) {
         try {
-          // Use stable model
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+          // Use specific stable version
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-002:generateContent?key=${apiKey}`;
 
           const payload = {
             contents: [{ parts: [{ text: prompt }] }],
@@ -882,8 +885,8 @@
             "I couldn't generate a response at this time."
           );
         } catch (error) {
-          console.error("Gemini API Error:", error);
-          return "Sorry, I'm having trouble connecting to my AI brain right now. Please try again later.";
+          console.error("Gemini API Error Details:", error);
+          return `Sorry, I'm having trouble. Error: ${error.message}`;
         }
       }
 
