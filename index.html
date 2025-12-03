@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO & Open Graph Tags -->
+    <meta
+      name="description"
+      content="Portfolio of Xander Coetzee - BSc Hons Computer Science Graduate specializing in Cyber Security, Digital Forensics, and AI."
+    />
+    <meta
+      name="keywords"
+      content="Xander Coetzee, Computer Science, Cyber Security, Digital Forensics, AI, Portfolio"
+    />
+    <meta name="author" content="Xander Coetzee" />
+    <meta
+      property="og:title"
+      content="Xander Coetzee | Computer Science & Security Specialist"
+    />
+    <meta
+      property="og:description"
+      content="Explore the projects and skills of a driven problem-solver bridging Cyber Security, Forensics, and AI."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://via.placeholder.com/1200x630?text=Xander+Coetzee+Portfolio"
+    />
+    <meta property="og:url" content="https:/xander-coetzee-portfolio.web.app" />
+
+    <title>Xander Coetzee | Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome (for icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Markdown Parser (for Chat AI responses) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- html2pdf.js for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Chosen Palette: Warm Minimalist Tech -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bgWarm: "#fdfbf7",
+              textSlate: "#334155",
+              accentIndigo: "#4f46e5",
+              accentTeal: "#0d9488",
+              cardBg: "#ffffff",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #fdfbf7;
+        color: #334155;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        border-radius: 0.75rem;
+      }
+      .nav-active {
+        border-bottom: 2px solid #4f46e5;
+        color: #4f46e5;
+        font-weight: 600;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Chat Widget Styles */
+      .chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .chat-window {
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+      }
+      .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        background-color: #f8fafc;
+      }
+      .chat-input-area {
+        padding: 1rem;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        gap: 0.5rem;
+      }
+      .message {
+        margin-bottom: 0.75rem;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+      .message.user {
+        background-color: #4f46e5;
+        color: white;
+        align-self: flex-end;
+        margin-left: 2rem;
+        border-bottom-right-radius: 0;
+      }
+      .message.ai {
+        background-color: #e2e8f0;
+        color: #334155;
+        align-self: flex-start;
+        margin-right: 2rem;
+        border-bottom-left-radius: 0;
+      }
+      .typing-indicator {
+        font-style: italic;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        margin-left: 1rem;
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="antialiased min-h-screen flex flex-col">
+    <!-- Navigation (Hidden in PDF) -->
+    <nav
+      class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200 shadow-sm pdf-hidden"
+      aria-label="Main Navigation"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <span class="text-xl font-bold text-slate-800 tracking-tight"
+              >XC</span
+            >
+          </div>
+          <div class="flex space-x-8 items-center hidden sm:flex">
+            <button
+              onclick="scrollToSection('skills')"
+              class="text-gray-500 hover:text-accentIndigo px-3 py-2 text-sm font-medium transition-colors"
+              aria-label="Scroll to Skills"
+            >
+              Skills
+            </button>
+            <button
+              onclick="scrollToSection('projects')"
+              class="text-gray-500 hover:text-accentIndigo px-3 py-2 text-sm font-medium transition-colors"
+              aria-label="Scroll to Projects"
+            >
+              Projects
+            </button>
+            <button
+              onclick="scrollToSection('timeline')"
+              class="text-gray-500 hover:text-accentIndigo px-3 py-2 text-sm font-medium transition-colors"
+              aria-label="Scroll to Timeline"
+            >
+              Timeline
+            </button>
+            <button
+              onclick="scrollToSection('about')"
+              class="text-gray-500 hover:text-accentIndigo px-3 py-2 text-sm font-medium transition-colors"
+              aria-label="Scroll to About"
+            >
+              About
+            </button>
+          </div>
+          <!-- Mobile menu button -->
+          <div class="flex items-center sm:hidden">
+            <button
+              class="text-gray-500 hover:text-gray-700 focus:outline-none"
+              onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+              aria-label="Toggle mobile menu"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        id="mobile-menu"
+        class="hidden sm:hidden bg-white border-t border-gray-100 p-4"
+      >
+        <button
+          onclick="scrollToSection('skills')"
+          class="block w-full text-left text-gray-500 hover:text-accentIndigo py-2"
+        >
+          Skills
+        </button>
+        <button
+          onclick="scrollToSection('projects')"
+          class="block w-full text-left text-gray-500 hover:text-accentIndigo py-2"
+        >
+          Projects
+        </button>
+        <button
+          onclick="scrollToSection('timeline')"
+          class="block w-full text-left text-gray-500 hover:text-accentIndigo py-2"
+        >
+          Timeline
+        </button>
+        <button
+          onclick="scrollToSection('about')"
+          class="block w-full text-left text-gray-500 hover:text-accentIndigo py-2"
+        >
+          About
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow" id="portfolio-content">
+      <!-- Hero Section -->
+      <section
+        class="bg-gradient-to-br from-indigo-50 to-bgWarm pt-12 pb-16 px-4"
+      >
+        <div class="max-w-4xl mx-auto text-center">
+          <div
+            class="inline-block p-1 rounded-full bg-gradient-to-tr from-accentIndigo to-accentTeal mb-6"
+          >
+            <div class="bg-white rounded-full p-1">
+              <img
+                src="profile pic.png"
+                alt="Xander Coetzee"
+                class="h-24 w-24 rounded-full object-cover"
+              />
+            </div>
+          </div>
+          <h1
+            class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight"
+          >
+            Xander Coetzee
+          </h1>
+          <p class="text-xl md:text-2xl text-slate-600 font-light mb-2">
+            BSc IT & BSc Hons Computer Science Graduate
+          </p>
+
+          <!-- Social Links -->
+          <div class="flex justify-center items-center gap-6 mb-6">
+            <a
+              href="https://github.com/Xander-Coetzee"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-slate-500 hover:text-slate-900 text-2xl transition transform hover:scale-110"
+              aria-label="GitHub Profile"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/xander-coetzee-22b09621b/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-slate-500 hover:text-blue-600 text-2xl transition transform hover:scale-110"
+              aria-label="LinkedIn Profile"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
+
+          <div
+            class="flex justify-center items-center gap-2 mb-6 text-sm text-slate-500 font-mono"
+          >
+            <i class="fas fa-envelope text-accentIndigo"></i>
+            <span id="email-text">Xandercoetzee1503@gmail.com</span>
+            <button
+              onclick="copyEmail()"
+              class="ml-2 text-xs bg-slate-200 hover:bg-slate-300 text-slate-600 px-2 py-1 rounded transition"
+              aria-label="Copy email address"
+            >
+              Copy
+            </button>
+          </div>
+
+          <!-- Download PDF Button -->
+          <button
+            onclick="downloadPDF()"
+            class="bg-slate-800 text-white px-6 py-2.5 rounded-full font-medium hover:bg-slate-700 hover:shadow-lg transition flex items-center gap-2 mx-auto mb-8 pdf-hidden"
+          >
+            <i class="fas fa-file-pdf"></i> Download CV
+          </button>
+
+          <div class="max-w-2xl mx-auto">
+            <p class="text-slate-600 leading-relaxed italic">
+              "Driven problem-solver bridging the gap between Cyber Security,
+              Digital Forensics, and AI."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-slate-800 mb-4">
+            Core Competencies
+          </h2>
+          <p class="text-slate-600 max-w-2xl mx-auto">
+            My expertise lies at the intersection of security, intelligent
+            systems, and robust software engineering.
+          </p>
+        </div>
+
+        <!-- Grid Layout for Skills -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Security Card -->
+          <div
+            class="glass-card p-8 border-t-4 border-accentIndigo hover:shadow-lg transition duration-300"
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div class="bg-indigo-100 p-3 rounded-lg text-accentIndigo">
+                <i class="fas fa-shield-alt text-xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800">
+                Security & Forensics
+              </h3>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">
+              Specialized in automated threat detection, penetration testing,
+              and forensic readiness.
+            </p>
+            <ul class="space-y-2 text-sm text-slate-500">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-indigo-400 text-xs"></i> Cyber
+                Security
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-indigo-400 text-xs"></i> Digital
+                Forensics
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-indigo-400 text-xs"></i> Disk-level
+                Investigation
+              </li>
+            </ul>
+          </div>
+          <!-- AI Card -->
+          <div
+            class="glass-card p-8 border-t-4 border-accentTeal hover:shadow-lg transition duration-300"
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div class="bg-teal-100 p-3 rounded-lg text-accentTeal">
+                <i class="fas fa-brain text-xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800">
+                AI & Machine Learning
+              </h3>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">
+              Developing metaheuristic pipelines and parameter-efficient
+              transfer learning models.
+            </p>
+            <ul class="space-y-2 text-sm text-slate-500">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-teal-400 text-xs"></i> NLP (African
+                Languages)
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-teal-400 text-xs"></i> Computer
+                Vision (YOLO)
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-teal-400 text-xs"></i> Deep Learning
+              </li>
+            </ul>
+          </div>
+          <!-- Dev Card -->
+          <div
+            class="glass-card p-8 border-t-4 border-orange-400 hover:shadow-lg transition duration-300"
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div class="bg-orange-100 p-3 rounded-lg text-orange-600">
+                <i class="fas fa-code text-xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800">
+                Development & Data
+              </h3>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">
+              Engineering scalable algorithms and optimizing data structures for
+              high performance.
+            </p>
+            <ul class="space-y-2 text-sm text-slate-500">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-orange-400 text-xs"></i> Python
+                Programming
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-orange-400 text-xs"></i> Data Mining
+                Algorithms
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check text-orange-400 text-xs"></i> Web
+                Scraping
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Nexus Section -->
+      <section id="projects" class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+          <div class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">
+              Project Showcase
+            </h2>
+            <p class="text-slate-600 max-w-3xl">
+              A curated selection of my technical work. These projects
+              demonstrate my ability to apply theoretical concepts to build
+              practical tools, from forensic frameworks to optimization
+              algorithms.
+            </p>
+          </div>
+
+          <!-- Filter Controls -->
+          <div
+            class="flex flex-wrap gap-2 mb-8 pdf-hidden"
+            id="project-filters"
+            role="group"
+            aria-label="Project Filters"
+          >
+            <button
+              onclick="filterProjects('all')"
+              class="filter-btn active bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-medium transition hover:shadow-lg"
+              aria-pressed="true"
+            >
+              All Projects
+            </button>
+            <button
+              onclick="filterProjects('security')"
+              class="filter-btn bg-slate-100 text-slate-600 hover:bg-indigo-50 hover:text-accentIndigo px-4 py-2 rounded-full text-sm font-medium transition"
+              aria-pressed="false"
+            >
+              Security & Forensics
+            </button>
+            <button
+              onclick="filterProjects('ai')"
+              class="filter-btn bg-slate-100 text-slate-600 hover:bg-teal-50 hover:text-accentTeal px-4 py-2 rounded-full text-sm font-medium transition"
+              aria-pressed="false"
+            >
+              AI & ML
+            </button>
+            <button
+              onclick="filterProjects('data')"
+              class="filter-btn bg-slate-100 text-slate-600 hover:bg-orange-50 hover:text-orange-600 px-4 py-2 rounded-full text-sm font-medium transition"
+              aria-pressed="false"
+            >
+              Data & Algorithms
+            </button>
+          </div>
+
+          <!-- Projects Grid -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            id="projects-grid"
+          >
+            <!-- Cards will be injected via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Timeline Section -->
+      <section id="timeline" class="py-16 px-4 max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-slate-800 mb-4">
+            Academic & Professional Journey
+          </h2>
+          <p class="text-slate-600">
+            A chronological view of my education and professional experience.
+          </p>
+        </div>
+
+        <div
+          class="relative border-l-2 border-slate-200 ml-4 md:ml-6 space-y-12"
+        >
+          <!-- Timeline items -->
+          <div class="relative pl-8 md:pl-12 group">
+            <div
+              class="absolute -left-[9px] top-0 bg-accentIndigo h-5 w-5 rounded-full border-4 border-white shadow-sm group-hover:scale-110 transition"
+            ></div>
+            <div
+              class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2"
+            >
+              <h3 class="text-xl font-bold text-slate-800">
+                BSc Honours Computer Science
+              </h3>
+              <span class="text-sm font-mono text-accentIndigo font-bold"
+                >2025</span
+              >
+            </div>
+            <h4 class="text-md text-slate-600 font-medium mb-3">
+              University of Pretoria
+            </h4>
+            <ul class="list-disc list-inside text-sm text-slate-500 space-y-1">
+              <li>
+                Advanced technical expertise in CS & Digital Forensics research.
+              </li>
+              <li>
+                Utilized formal research methodologies and report writing.
+              </li>
+              <li>
+                Applied strong programming skills across all advanced modules.
+              </li>
+            </ul>
+          </div>
+          <div class="relative pl-8 md:pl-12 group">
+            <div
+              class="absolute -left-[9px] top-0 bg-slate-400 h-5 w-5 rounded-full border-4 border-white shadow-sm group-hover:bg-slate-600 transition"
+            ></div>
+            <div
+              class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2"
+            >
+              <h3 class="text-xl font-bold text-slate-800">
+                Assistant Lecturer
+              </h3>
+              <span class="text-sm font-mono text-slate-500">2023 - 2024</span>
+            </div>
+            <h4 class="text-md text-slate-600 font-medium mb-3">
+              North-West University (NWU)
+            </h4>
+            <ul class="list-disc list-inside text-sm text-slate-500 space-y-1">
+              <li>Provided direct coding support and debugging tutoring.</li>
+              <li>Graded tests/assignments under strict deadlines.</li>
+            </ul>
+          </div>
+          <div class="relative pl-8 md:pl-12 group">
+            <div
+              class="absolute -left-[9px] top-0 bg-slate-300 h-5 w-5 rounded-full border-4 border-white shadow-sm transition"
+            ></div>
+            <div
+              class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2"
+            >
+              <h3 class="text-xl font-bold text-slate-800">
+                BSc Information Technology
+              </h3>
+              <span class="text-sm font-mono text-slate-500">2022 - 2024</span>
+            </div>
+            <h4 class="text-md text-slate-600 font-medium mb-3">
+              North-West University
+            </h4>
+            <ul class="list-disc list-inside text-sm text-slate-500 space-y-1">
+              <li>Computer management and programming.</li>
+              <li>Designing and delivering computerized systems.</li>
+            </ul>
+          </div>
+          <div class="relative pl-8 md:pl-12 group">
+            <div
+              class="absolute -left-[9px] top-0 bg-slate-200 h-5 w-5 rounded-full border-4 border-white shadow-sm transition"
+            ></div>
+            <div
+              class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2"
+            >
+              <h3 class="text-xl font-bold text-slate-800">
+                National Senior Certificate
+              </h3>
+              <span class="text-sm font-mono text-slate-500">2017 - 2022</span>
+            </div>
+            <h4 class="text-md text-slate-600 font-medium mb-3">
+              Hoërskool Linden
+            </h4>
+          </div>
+        </div>
+      </section>
+
+      <!-- About & Interests Section -->
+      <section id="about" class="py-16 px-4 bg-slate-50">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">About Me</h2>
+            <div
+              class="bg-white p-8 rounded-2xl shadow-sm space-y-4 text-slate-600 leading-relaxed"
+            >
+              <p>
+                I am a driven problem-solver with a passion for designing
+                innovative solutions to complex challenges. As a dedicated
+                lifelong learner, I embrace new challenges and opportunities for
+                growth.
+              </p>
+              <p>
+                Currently completing my Honours at the University of Pretoria, I
+                am ready to leverage my diverse technical background to
+                contribute to impactful projects in the tech industry.
+              </p>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Beyond Code</h2>
+            <div class="grid grid-cols-1 gap-4">
+              <div
+                class="bg-white p-4 rounded-xl shadow-sm flex items-start space-x-4 hover:shadow-md transition"
+              >
+                <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600">
+                  <i class="fas fa-music"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-800">Choral Singing</h4>
+                </div>
+              </div>
+              <div
+                class="bg-white p-4 rounded-xl shadow-sm flex items-start space-x-4 hover:shadow-md transition"
+              >
+                <div class="bg-purple-100 p-2 rounded-lg text-purple-600">
+                  <i class="fas fa-gamepad"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-800">Esports Leadership</h4>
+                </div>
+              </div>
+              <div
+                class="bg-white p-4 rounded-xl shadow-sm flex items-start space-x-4 hover:shadow-md transition"
+              >
+                <div class="bg-green-100 p-2 rounded-lg text-green-600">
+                  <i class="fas fa-dragon"></i>
+                </div>
+                <div><h4 class="font-bold text-slate-800">Gaming</h4></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="bg-slate-800 text-slate-300 py-8 text-center border-t border-slate-700"
+    >
+      <p class="mb-4">Xander Coetzee &copy; 2025</p>
+      <div class="flex justify-center space-x-6 text-xl mb-4">
+        <a
+          href="mailto:Xandercoetzee1503@gmail.com"
+          class="hover:text-white transition"
+          aria-label="Email Xander"
+          ><i class="fas fa-envelope"></i
+        ></a>
+        <a
+          href="https://github.com/Xander-Coetzee"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-white transition"
+          aria-label="GitHub Profile"
+          ><i class="fab fa-github"></i
+        ></a>
+        <a
+          href="https://www.linkedin.com/in/xander-coetzee-22b09621b/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-blue-400 transition"
+          aria-label="LinkedIn Profile"
+          ><i class="fab fa-linkedin"></i
+        ></a>
+      </div>
+    </footer>
+
+    <!-- Chat Widget (Hidden in PDF) -->
+    <div class="chat-widget pdf-hidden">
+      <!-- Chat Window -->
+      <div id="chat-window" class="chat-window">
+        <div
+          class="bg-slate-800 text-white p-4 flex justify-between items-center"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-green-400"></div>
+            <span class="font-bold text-sm">Xander's AI Assistant</span>
+          </div>
+          <button
+            onclick="toggleChat()"
+            class="text-slate-400 hover:text-white"
+            aria-label="Close chat"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="chat-messages" class="chat-messages flex flex-col gap-2">
+          <!-- Messages will appear here -->
+          <div class="message ai bg-indigo-50 border border-indigo-100">
+            Hello! I'm Xander's AI assistant. I have read his resume and can
+            answer questions about his skills, projects, and experience. What
+            would you like to know?
+          </div>
+        </div>
+        <div id="typing-indicator" class="typing-indicator">
+          Xander AI is typing...
+        </div>
+        <div class="chat-input-area">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Ask about Python, Security..."
+            class="flex-grow p-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:border-accentIndigo"
+            onkeypress="handleKeyPress(event)"
+            aria-label="Chat input"
+          />
+          <button
+            onclick="sendMessage()"
+            class="bg-accentIndigo text-white px-3 py-2 rounded-md hover:bg-indigo-600 transition"
+            aria-label="Send message"
+          >
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Toggle Button -->
+      <button
+        onclick="toggleChat()"
+        class="bg-accentIndigo hover:bg-indigo-600 text-white p-4 rounded-full shadow-lg transition transform hover:scale-110 flex items-center gap-2"
+        aria-label="Open Chat Assistant"
+      >
+        <i class="fas fa-robot text-xl"></i>
+        <span class="font-bold text-sm hidden sm:inline">Ask AI Xander</span>
+      </button>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+      const apiKey = "";
+
+      // Resume Context for AI
+      const resumeContext = `
+        Name: Xander Coetzee
+        Role: BSc IT & BSc Hons Computer Science Graduate
+        Email: Xandercoetzee1503@gmail.com
+        Github: https://github.com/Xander-Coetzee
+        LinkedIn: https://www.linkedin.com/in/xander-coetzee-22b09621b/
+        
+        Education:
+        1. University of Pretoria (2025): BSc Honours Computer Science. Advanced technical expertise, Digital Forensics research, formal research methodologies.
+        2. North-West University (2022-2024): BSc Information Technology. Computer management, programming, system design.
+        
+        Skills:
+        Cyber Security, Digital Forensics, NLP, Machine Learning & Deep Learning, Python Programming, Data Mining, Research, Web Scraping, Data Visualization.
+
+        Experience:
+        Assistant Lecturer at NWU (2023-2024): Coding support, debugging tutoring, grading, lab management.
+
+        Projects:
+        1. AI-Driven Phishing & Forensic Readiness: Automated threat detection, evidence preservation, secure forensic protocols.
+        2. Digital Forensics & Info Security: Penetration testing (Windows/Linux), disk-level investigation, attack vector identification.
+        3. Optimised Data Mining Algorithms: Scalable, memory-optimised weighted Apriori algorithm using transaction ID intersections.
+        4. Computer Vision & Deep Learning: Metaheuristic pipelines for image quality enhancement, YOLO models for object detection.
+        5. Cross-Lingual NLP & Emotion AI: Parameter-efficient transfer learning for multilabel emotion analysis in African languages.
+
+        Activities:
+        Choral singing, Esports team leader/manager, Video gaming.
+        `;
+
+      // Data Store (Projects)
+      const projects = [
+        {
+          id: 1,
+          title: "AI-Driven Phishing & Forensic Readiness",
+          category: "security",
+          icon: "fa-user-secret",
+          desc: "Architected an automated threat detection and evidence preservation framework, integrating secure forensic protocols for cyber-resilience.",
+          tags: ["Forensics", "Automation", "Security"],
+        },
+        {
+          id: 2,
+          title: "Digital Forensics & Info Security",
+          category: "security",
+          icon: "fa-shield-virus",
+          desc: "Executed full-lifecycle penetration testing and forensic analysis across Windows/Linux. Identified attack vectors via disk-level investigation.",
+          tags: ["Pen-Testing", "Linux", "Windows", "Disk Analysis"],
+        },
+        {
+          id: 3,
+          title: "Optimised Data Mining Algorithms",
+          category: "data",
+          icon: "fa-database",
+          desc: "Engineered a scalable, memory-optimised weighted Apriori algorithm using transaction ID intersections.",
+          tags: ["Algorithms", "Optimization", "Data Mining"],
+        },
+        {
+          id: 4,
+          title: "Computer Vision & Deep Learning",
+          category: "ai",
+          icon: "fa-eye",
+          desc: "Developed metaheuristic pipelines for image quality enhancement and deployed YOLO models for real-time object detection.",
+          tags: ["YOLO", "Computer Vision", "Metaheuristics"],
+        },
+        {
+          id: 5,
+          title: "Cross-Lingual NLP & Emotion AI",
+          category: "ai",
+          icon: "fa-comments",
+          desc: "Pioneered parameter-efficient transfer learning for multilabel emotion analysis, focusing on under-resourced African languages.",
+          tags: ["NLP", "Transfer Learning", "African Languages"],
+        },
+      ];
+
+      // --- PDF Download Function ---
+      function downloadPDF() {
+        const link = document.createElement("a");
+        link.href = "Xander_updated_CV.pdf";
+        link.download = "Xander_Coetzee_CV.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // --- Gemini API Handler ---
+      async function callGemini(
+        prompt,
+        systemInstruction = "You are a helpful assistant."
+      ) {
+        try {
+          // Determine API endpoint (Text generation)
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+          const payload = {
+            contents: [{ parts: [{ text: prompt }] }],
+            systemInstruction: { parts: [{ text: systemInstruction }] },
+          };
+
+          const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+          const data = await response.json();
+          return (
+            data.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "I couldn't generate a response at this time."
+          );
+        } catch (error) {
+          console.error("Gemini API Error:", error);
+          return "Sorry, I'm having trouble connecting to my AI brain right now. Please try again later.";
+        }
+      }
+
+      // --- Interaction Logic ---
+
+      // Chat Widget Functions
+      function toggleChat() {
+        const chatWindow = document.getElementById("chat-window");
+        if (chatWindow.style.display === "flex") {
+          chatWindow.style.display = "none";
+        } else {
+          chatWindow.style.display = "flex";
+          document.getElementById("chat-input").focus();
+        }
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") sendMessage();
+      }
+
+      async function sendMessage() {
+        const input = document.getElementById("chat-input");
+        const message = input.value.trim();
+        if (!message) return;
+
+        // Add User Message
+        addMessage(message, "user");
+        input.value = "";
+
+        // Show Typing Indicator
+        const indicator = document.getElementById("typing-indicator");
+        indicator.style.display = "block";
+
+        // Scroll to bottom
+        const container = document.getElementById("chat-messages");
+        container.scrollTop = container.scrollHeight;
+
+        // Call API
+        const systemPrompt = `You are the professional AI Digital Twin of Xander Coetzee. Use the provided resume context to answer the user's questions about Xander's skills, experience, and background. 
+            - Be concise, professional, and enthusiastic. 
+            - Speak in the first person ("I am", "I have").
+            - If the answer isn't in the context, politely say you don't have that specific info but emphasize a related strength.
+            - Context: ${resumeContext}`;
+
+        const response = await callGemini(message, systemPrompt);
+
+        // Hide Typing & Add AI Message
+        indicator.style.display = "none";
+        addMessage(response, "ai");
+      }
+
+      function addMessage(text, sender) {
+        const container = document.getElementById("chat-messages");
+        const div = document.createElement("div");
+        div.className = `message ${sender}`;
+
+        // Use marked for simple formatting if AI returns markdown
+        if (sender === "ai") {
+          div.innerHTML = marked.parse(text);
+        } else {
+          div.textContent = text;
+        }
+
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      // Project Rendering
+      function renderProjects(filter) {
+        const grid = document.getElementById("projects-grid");
+        grid.innerHTML = "";
+
+        const filteredProjects =
+          filter === "all"
+            ? projects
+            : projects.filter((p) => p.category === filter);
+
+        filteredProjects.forEach((p) => {
+          const card = document.createElement("div");
+          card.className =
+            "bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition duration-300 flex flex-col fade-in relative overflow-hidden group";
+
+          card.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 rounded-lg ${getCategoryColorBg(
+                          p.category
+                        )}">
+                            <i class="fas ${
+                              p.icon
+                            } text-xl ${getCategoryColorText(p.category)}"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wide text-slate-400 border border-slate-200 px-2 py-1 rounded-md">
+                            ${getCategoryLabel(p.category)}
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2 leading-tight">${
+                      p.title
+                    }</h3>
+                    <p class="text-slate-600 text-sm mb-4 flex-grow">${
+                      p.desc
+                    }</p>
+                    
+                    <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-50">
+                        ${p.tags
+                          .map(
+                            (tag) =>
+                              `<span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-md">${tag}</span>`
+                          )
+                          .join("")}
+                    </div>
+                `;
+          grid.appendChild(card);
+        });
+      }
+
+      // Filter Button Logic
+      function filterProjects(category) {
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.classList.remove("bg-slate-800", "text-white", "shadow-lg");
+          btn.classList.add("bg-slate-100", "text-slate-600");
+          btn.setAttribute("aria-pressed", "false");
+        });
+        const activeBtn = Array.from(
+          document.querySelectorAll(".filter-btn")
+        ).find((btn) => btn.onclick.toString().includes(`'${category}'`));
+        if (activeBtn) {
+          activeBtn.classList.remove("bg-slate-100", "text-slate-600");
+          activeBtn.classList.add("bg-slate-800", "text-white", "shadow-lg");
+          activeBtn.setAttribute("aria-pressed", "true");
+        }
+        renderProjects(category);
+      }
+
+      // Helpers
+      function getCategoryColorBg(cat) {
+        if (cat === "security") return "bg-indigo-50";
+        if (cat === "ai") return "bg-teal-50";
+        return "bg-orange-50";
+      }
+      function getCategoryColorText(cat) {
+        if (cat === "security") return "text-indigo-600";
+        if (cat === "ai") return "text-teal-600";
+        return "text-orange-600";
+      }
+      function getCategoryLabel(cat) {
+        if (cat === "security") return "Security";
+        if (cat === "ai") return "AI / ML";
+        return "Data / Dev";
+      }
+      function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+          const offset = 80;
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = element.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+        document.getElementById("mobile-menu").classList.add("hidden");
+      }
+      function copyEmail() {
+        const email = "Xandercoetzee1503@gmail.com";
+        navigator.clipboard.writeText(email).then(() => {
+          const btn = document.querySelector("#email-text + button");
+          const originalText = btn.innerText;
+          btn.innerText = "Copied!";
+          btn.classList.add("bg-green-200", "text-green-800");
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.classList.remove("bg-green-200", "text-green-800");
+          }, 2000);
+        });
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        renderProjects("all");
+      });
+    </script>
+  </body>
+</html>
