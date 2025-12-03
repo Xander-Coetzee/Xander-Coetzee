@@ -253,11 +253,11 @@
             class="inline-block p-1 rounded-full bg-gradient-to-tr from-accentIndigo to-accentTeal mb-6"
           >
             <div class="bg-white rounded-full p-1">
-              <div
-                class="h-24 w-24 rounded-full bg-slate-100 flex items-center justify-center text-4xl text-slate-400"
-              >
-                <i class="fas fa-user-graduate" aria-hidden="true"></i>
-              </div>
+              <img
+                src="profile pic.png"
+                alt="Xander Coetzee"
+                class="h-24 w-24 rounded-full object-cover"
+              />
             </div>
           </div>
           <h1
@@ -747,7 +747,7 @@
 
     <!-- JavaScript Logic -->
     <script>
-      const apiKey = ""; // API key injected by environment
+      const apiKey = "AIzaSyDyiHdjeO0MUKR2IoT6xMsdbdX3eXTjYKY";
 
       // Resume Context for AI
       const resumeContext = `
@@ -824,55 +824,12 @@
 
       // --- PDF Download Function ---
       function downloadPDF() {
-        // Select elements to hide
-        const hiddenElements = document.querySelectorAll(".pdf-hidden");
-        hiddenElements.forEach((el) => el.classList.add("hidden"));
-
-        // Show full list of projects temporarily if filtered
-        const originalFilter = document.querySelector(
-          '.filter-btn[aria-pressed="true"]'
-        );
-        renderProjects("all");
-
-        const element = document.body;
-        const opt = {
-          margin: [0, 0, 0, 0], // Margin [top, left, bottom, right]
-          filename: "Xander_Coetzee_Portfolio.pdf",
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-        };
-
-        // Loading state
-        const btn = document.querySelector('button[onclick="downloadPDF()"]');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-
-        html2pdf()
-          .set(opt)
-          .from(element)
-          .save()
-          .then(() => {
-            // Restore state
-            hiddenElements.forEach((el) => el.classList.remove("hidden"));
-            btn.innerHTML = originalText;
-
-            // Restore filter
-            if (originalFilter) {
-              // Extract onclick string to get category, rough hack
-              const onclickStr = originalFilter.getAttribute("onclick");
-              const category = onclickStr.match(/'([^']+)'/)[1];
-              filterProjects(category);
-            }
-          })
-          .catch((err) => {
-            console.error("PDF Gen Error:", err);
-            hiddenElements.forEach((el) => el.classList.remove("hidden"));
-            btn.innerHTML = originalText;
-            alert(
-              "Could not generate PDF. Please try printing the page directly (Ctrl+P)."
-            );
-          });
+        const link = document.createElement("a");
+        link.href = "Xander_updated_CV.pdf";
+        link.download = "Xander_Coetzee_CV.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
 
       // --- Gemini API Handler ---
