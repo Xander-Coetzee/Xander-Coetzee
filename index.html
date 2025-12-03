@@ -833,26 +833,48 @@
       }
 
       // --- Gemini API Handler ---
+      // --- Gemini API Handler ---
+      async function fetchWithRetry(url, options, retries = 3, backoff = 1000) {
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            // If rate limited (429) or server error (5xx), retry
+            if (response.status === 429 || response.status >= 500) {
+              throw new Error(`Retryable Error: ${response.status}`);
+            }
+            throw new Error(`API Error: ${response.status}`);
+          }
+          return response;
+        } catch (error) {
+          if (retries > 0) {
+            console.warn(
+              `Retrying... attempts left: ${retries}. Error: ${error.message}`
+            );
+            await new Promise((resolve) => setTimeout(resolve, backoff));
+            return fetchWithRetry(url, options, retries - 1, backoff * 2);
+          }
+          throw error;
+        }
+      }
+
       async function callGemini(
         prompt,
         systemInstruction = "You are a helpful assistant."
       ) {
         try {
-          // Determine API endpoint (Text generation)
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+          // Use stable model
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
           const payload = {
             contents: [{ parts: [{ text: prompt }] }],
             systemInstruction: { parts: [{ text: systemInstruction }] },
           };
 
-          const response = await fetch(url, {
+          const response = await fetchWithRetry(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
-
-          if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
           const data = await response.json();
           return (
@@ -884,8 +906,14 @@
 
       async function sendMessage() {
         const input = document.getElementById("chat-input");
+        const sendBtn = document.querySelector(".chat-input-area button");
         const message = input.value.trim();
         if (!message) return;
+
+        // Disable UI
+        input.disabled = true;
+        sendBtn.disabled = true;
+        sendBtn.classList.add("opacity-50", "cursor-not-allowed");
 
         // Add User Message
         addMessage(message, "user");
@@ -911,6 +939,12 @@
         // Hide Typing & Add AI Message
         indicator.style.display = "none";
         addMessage(response, "ai");
+
+        // Re-enable UI
+        input.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        input.focus();
       }
 
       function addMessage(text, sender) {
