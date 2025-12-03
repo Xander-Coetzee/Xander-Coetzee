@@ -41,8 +41,8 @@ Since this is a static HTML file, it can be run directly in any modern web brows
     - Locate the `apiKey` variable in the script section at the bottom of the file (around line 750).
     - Insert your Google Gemini API key:
       `javascript
-    const apiKey = "YOUR_GEMINI_API_KEY_HERE";
-    `
+const apiKey = "YOUR_GEMINI_API_KEY_HERE";
+`
       > **Note**: You can get a free API key from [Google AI Studio](https://aistudio.google.com/).
 
 3.  **Run**:
@@ -58,3 +58,5 @@ The entire application is contained within a single file for portability and sim
 ## 📄 License
 
 This project is open for viewing and educational purposes. Content and personal details remain the property of Xander Coetzee.
+
+<!-- Triggering deployment for API key update -->
