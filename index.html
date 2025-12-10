@@ -38,8 +38,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <!-- Markdown Parser (for Chat AI responses) -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <!-- html2pdf.js for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -89,70 +88,6 @@
           opacity: 1;
           transform: translateY(0);
         }
-      }
-
-      /* Chat Widget Styles */
-      .chat-widget {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-      }
-      .chat-window {
-        width: 350px;
-        height: 500px;
-        background: white;
-        border-radius: 1rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        display: none; /* Hidden by default */
-        flex-direction: column;
-        overflow: hidden;
-        margin-bottom: 1rem;
-        border: 1px solid #e2e8f0;
-      }
-      .chat-messages {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 1rem;
-        background-color: #f8fafc;
-      }
-      .chat-input-area {
-        padding: 1rem;
-        background: white;
-        border-top: 1px solid #e2e8f0;
-        display: flex;
-        gap: 0.5rem;
-      }
-      .message {
-        margin-bottom: 0.75rem;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
-        font-size: 0.9rem;
-        line-height: 1.4;
-      }
-      .message.user {
-        background-color: #4f46e5;
-        color: white;
-        align-self: flex-end;
-        margin-left: 2rem;
-        border-bottom-right-radius: 0;
-      }
-      .message.ai {
-        background-color: #e2e8f0;
-        color: #334155;
-        align-self: flex-start;
-        margin-right: 2rem;
-        border-bottom-left-radius: 0;
-      }
-      .typing-indicator {
-        font-style: italic;
-        color: #94a3b8;
-        font-size: 0.8rem;
-        margin-left: 1rem;
-        display: none;
       }
     </style>
   </head>
@@ -685,99 +620,8 @@
       </div>
     </footer>
 
-    <!-- Chat Widget (Hidden in PDF) -->
-    <div class="chat-widget pdf-hidden">
-      <!-- Chat Window -->
-      <div id="chat-window" class="chat-window">
-        <div
-          class="bg-slate-800 text-white p-4 flex justify-between items-center"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-green-400"></div>
-            <span class="font-bold text-sm">Xander's AI Assistant</span>
-          </div>
-          <button
-            onclick="toggleChat()"
-            class="text-slate-400 hover:text-white"
-            aria-label="Close chat"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div id="chat-messages" class="chat-messages flex flex-col gap-2">
-          <!-- Messages will appear here -->
-          <div class="message ai bg-indigo-50 border border-indigo-100">
-            Hello! I'm Xander's AI assistant. I have read his resume and can
-            answer questions about his skills, projects, and experience. What
-            would you like to know?
-          </div>
-        </div>
-        <div id="typing-indicator" class="typing-indicator">
-          Xander AI is typing...
-        </div>
-        <div class="chat-input-area">
-          <input
-            type="text"
-            id="chat-input"
-            placeholder="Ask about Python, Security..."
-            class="flex-grow p-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:border-accentIndigo"
-            onkeypress="handleKeyPress(event)"
-            aria-label="Chat input"
-          />
-          <button
-            onclick="sendMessage()"
-            class="bg-accentIndigo text-white px-3 py-2 rounded-md hover:bg-indigo-600 transition"
-            aria-label="Send message"
-          >
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Chat Toggle Button -->
-      <button
-        onclick="toggleChat()"
-        class="bg-accentIndigo hover:bg-indigo-600 text-white p-4 rounded-full shadow-lg transition transform hover:scale-110 flex items-center gap-2"
-        aria-label="Open Chat Assistant"
-      >
-        <i class="fas fa-robot text-xl"></i>
-        <span class="font-bold text-sm hidden sm:inline">Ask AI Xander</span>
-      </button>
-    </div>
-
     <!-- JavaScript Logic -->
     <script>
-      const apiKey = "AIzaSyAJR_80N1jqcgW-b6VHf2fTzfFW_rjpk3g";
-
-      // Resume Context for AI
-      const resumeContext = `
-        Name: Xander Coetzee
-        Role: BSc IT & BSc Hons Computer Science Graduate
-        Email: Xandercoetzee1503@gmail.com
-        Github: https://github.com/Xander-Coetzee
-        LinkedIn: https://www.linkedin.com/in/xander-coetzee-22b09621b/
-        
-        Education:
-        1. University of Pretoria (2025): BSc Honours Computer Science. Advanced technical expertise, Digital Forensics research, formal research methodologies.
-        2. North-West University (2022-2024): BSc Information Technology. Computer management, programming, system design.
-        
-        Skills:
-        Cyber Security, Digital Forensics, NLP, Machine Learning & Deep Learning, Python Programming, Data Mining, Research, Web Scraping, Data Visualization.
-
-        Experience:
-        Assistant Lecturer at NWU (2023-2024): Coding support, debugging tutoring, grading, lab management.
-
-        Projects:
-        1. AI-Driven Phishing & Forensic Readiness: Automated threat detection, evidence preservation, secure forensic protocols.
-        2. Digital Forensics & Info Security: Penetration testing (Windows/Linux), disk-level investigation, attack vector identification.
-        3. Optimised Data Mining Algorithms: Scalable, memory-optimised weighted Apriori algorithm using transaction ID intersections.
-        4. Computer Vision & Deep Learning: Metaheuristic pipelines for image quality enhancement, YOLO models for object detection.
-        5. Cross-Lingual NLP & Emotion AI: Parameter-efficient transfer learning for multilabel emotion analysis in African languages.
-
-        Activities:
-        Choral singing, Esports team leader/manager, Video gaming.
-        `;
-
       // Data Store (Projects)
       const projects = [
         {
@@ -830,140 +674,6 @@
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      }
-
-      // --- Gemini API Handler ---
-      // --- Gemini API Handler ---
-      async function fetchWithRetry(url, options, retries = 3, backoff = 1000) {
-        try {
-          const response = await fetch(url, options);
-          if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`API Error Body: ${errorText}`);
-
-            // If rate limited (429) or server error (5xx), retry
-            if (response.status === 429 || response.status >= 500) {
-              throw new Error(`Retryable Error: ${response.status}`);
-            }
-            throw new Error(`API Error: ${response.status} - ${errorText}`);
-          }
-          return response;
-        } catch (error) {
-          if (retries > 0) {
-            console.warn(
-              `Retrying... attempts left: ${retries}. Error: ${error.message}`
-            );
-            await new Promise((resolve) => setTimeout(resolve, backoff));
-            return fetchWithRetry(url, options, retries - 1, backoff * 2);
-          }
-          throw error;
-        }
-      }
-
-      async function callGemini(
-        prompt,
-        systemInstruction = "You are a helpful assistant."
-      ) {
-        try {
-          // Use specific stable version
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-          const payload = {
-            contents: [{ parts: [{ text: prompt }] }],
-            systemInstruction: { parts: [{ text: systemInstruction }] },
-          };
-
-          const response = await fetchWithRetry(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          const data = await response.json();
-          return (
-            data.candidates?.[0]?.content?.parts?.[0]?.text ||
-            "I couldn't generate a response at this time."
-          );
-        } catch (error) {
-          console.error("Gemini API Error Details:", error);
-          return `Sorry, I'm having trouble. Error: ${error.message}`;
-        }
-      }
-
-      // --- Interaction Logic ---
-
-      // Chat Widget Functions
-      function toggleChat() {
-        const chatWindow = document.getElementById("chat-window");
-        if (chatWindow.style.display === "flex") {
-          chatWindow.style.display = "none";
-        } else {
-          chatWindow.style.display = "flex";
-          document.getElementById("chat-input").focus();
-        }
-      }
-
-      function handleKeyPress(event) {
-        if (event.key === "Enter") sendMessage();
-      }
-
-      async function sendMessage() {
-        const input = document.getElementById("chat-input");
-        const sendBtn = document.querySelector(".chat-input-area button");
-        const message = input.value.trim();
-        if (!message) return;
-
-        // Disable UI
-        input.disabled = true;
-        sendBtn.disabled = true;
-        sendBtn.classList.add("opacity-50", "cursor-not-allowed");
-
-        // Add User Message
-        addMessage(message, "user");
-        input.value = "";
-
-        // Show Typing Indicator
-        const indicator = document.getElementById("typing-indicator");
-        indicator.style.display = "block";
-
-        // Scroll to bottom
-        const container = document.getElementById("chat-messages");
-        container.scrollTop = container.scrollHeight;
-
-        // Call API
-        const systemPrompt = `You are the professional AI Digital Twin of Xander Coetzee. Use the provided resume context to answer the user's questions about Xander's skills, experience, and background. 
-            - Be concise, professional, and enthusiastic. 
-            - Speak in the first person ("I am", "I have").
-            - If the answer isn't in the context, politely say you don't have that specific info but emphasize a related strength.
-            - Context: ${resumeContext}`;
-
-        const response = await callGemini(message, systemPrompt);
-
-        // Hide Typing & Add AI Message
-        indicator.style.display = "none";
-        addMessage(response, "ai");
-
-        // Re-enable UI
-        input.disabled = false;
-        sendBtn.disabled = false;
-        sendBtn.classList.remove("opacity-50", "cursor-not-allowed");
-        input.focus();
-      }
-
-      function addMessage(text, sender) {
-        const container = document.getElementById("chat-messages");
-        const div = document.createElement("div");
-        div.className = `message ${sender}`;
-
-        // Use marked for simple formatting if AI returns markdown
-        if (sender === "ai") {
-          div.innerHTML = marked.parse(text);
-        } else {
-          div.textContent = text;
-        }
-
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
       }
 
       // Project Rendering
@@ -1076,7 +786,7 @@
 
       // Initialize
       document.addEventListener("DOMContentLoaded", function () {
-        console.log("Portfolio v1.1: Stable Model + Retry Logic Loaded");
+        console.log("Portfolio v1.1 Loaded");
         renderProjects("all");
       });
     </script>
